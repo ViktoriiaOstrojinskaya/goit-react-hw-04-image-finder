@@ -86,6 +86,7 @@ class App extends Component {
 
     return (
       <MainPage>
+        <h1>hw-4</h1>
         <Searchbar onSubmit={this.handleSearchBarSubmit} />
         <ImageGallery
           searchName={imageName}
