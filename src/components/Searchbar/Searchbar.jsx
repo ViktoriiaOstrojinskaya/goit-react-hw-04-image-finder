@@ -1,5 +1,4 @@
 import { FcSearch } from 'react-icons/fc';
-import { Component } from 'react';
 import { toast } from 'react-toastify';
 import {
   SearchbarItem,
@@ -8,52 +7,41 @@ import {
   ButtonLabel,
   SearchFormInput,
 } from './Searchbar.styled';
+import { useState } from 'react';
 
-class Searchbar extends Component {
-  state = {
-    imageName: '',
+export default function Searchbar({ onSubmit }) {
+  const [imageName, setImageName] = useState('');
+
+  const handleChangeName = event => {
+    setImageName(event.currentTarget.value.toLowerCase());
   };
 
-  handleChangeName = event => {
-    this.setState({
-      imageName: event.currentTarget.value.toLowerCase(),
-    });
-  };
-
-  handleSubmit = event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    const { imageName } = this.state;
 
     if (imageName.trim() === '') {
       toast.warn('Please, enter a request! 🕵️‍♀️');
       return;
     }
-    this.props.onSubmit(imageName);
-    this.setState({
-      imageName: '',
-    });
+    onSubmit(imageName);
+    setImageName('');
   };
 
-  render() {
-    const { imageName } = this.state;
-    return (
-      <SearchbarItem>
-        <SearchForm onSubmit={this.handleSubmit}>
-          <SearchFormButton type="submit">
-            <FcSearch size="30" />
-            <ButtonLabel>Search</ButtonLabel>
-          </SearchFormButton>
+  return (
+    <SearchbarItem>
+      <SearchForm onSubmit={handleSubmit}>
+        <SearchFormButton type="submit">
+          <FcSearch size="30" />
+          <ButtonLabel>Search</ButtonLabel>
+        </SearchFormButton>
 
-          <SearchFormInput
-            type="text"
-            placeholder="Search images and photos"
-            value={imageName}
-            onChange={this.handleChangeName}
-          />
-        </SearchForm>
-      </SearchbarItem>
-    );
-  }
+        <SearchFormInput
+          type="text"
+          placeholder="Search images and photos"
+          value={imageName}
+          onChange={handleChangeName}
+        />
+      </SearchForm>
+    </SearchbarItem>
+  );
 }
-
-export default Searchbar;
