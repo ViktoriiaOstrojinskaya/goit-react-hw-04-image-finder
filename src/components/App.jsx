@@ -113,32 +113,25 @@ export default function App() {
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  const handleSearchBarSubmit = imageName => {
-    setImageName(imageName);
-    setPage(1);
-    setImages([]);
-  };
-
   useEffect(() => {
     if (!imageName) {
       return;
     }
 
-    const renderGallery = async () => {
+    const renderGallery = () => {
       setLoading(true);
 
       try {
-        const response = await fetchImages(imageName, page);
+        const { hits, totalHits } = fetchImages(imageName, page);
 
-        if (response.hits.length === 0) {
-          return toast.error(
-            'Sorry, we did not find anything for your request 😢'
-          );
+        if (hits.length === 0) {
+          toast.error('Sorry, we did not find anything for your request 😢');
         }
-        setTotalImages(response.totalHits);
-        setImages(prevImages => [...prevImages, ...response.hits]);
+        setImages(images => [...images, ...hits]);
+        setTotalImages(totalHits);
       } catch (error) {
-        return toast.error('Oops, something went wrong 🫣 Try again!');
+        setError(error);
+        toast.error('Oops, something went wrong 🫣 Try again!');
       } finally {
         setLoading(false);
       }
@@ -146,6 +139,12 @@ export default function App() {
 
     renderGallery();
   }, [imageName, page]);
+
+  const handleSearchBarSubmit = imageName => {
+    setImageName(imageName);
+    setPage(1);
+    setImages([]);
+  };
 
   const loadMore = () => {
     setPage(prevPage => prevPage + 1);
@@ -163,7 +162,7 @@ export default function App() {
   };
 
   const maxPage = Math.ceil(setTotalImages / 12);
-  const showButton = setImages.length > 0 && setPage < maxPage;
+  const showButton = images.length > 0 && setPage < maxPage;
 
   return (
     <MainPage>
