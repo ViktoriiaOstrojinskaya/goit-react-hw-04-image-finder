@@ -114,63 +114,42 @@ export default function App() {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleSearchBarSubmit = imageName => {
-    setImageName(setImageName);
+    setImageName(imageName);
     setPage(1);
     setImages([]);
   };
 
-  // useEffect(() => {
-  //   try {
-  //     const response = fetchImages(imageName, page);
-  //     setLoading(true);
-  //     if (response.data.hits.length === 0) {
-  //       return toast.error(
-  //         'Sorry, we did not find anything for your request 😢'
-  //       );
-  //     }
-  //     setTotalImages(response.data.totalHits);
-  //     setImages(prevImages => [...prevImages, ...response.data.hits]);
-  //   } catch {
-  //     setError(toast.error('Oops, something went wrong 🫣 Try again!'));
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }, [imageName, page]);
+  useEffect(() => {
+    if (!imageName) {
+      return;
+    }
+
+    const renderGallery = async () => {
+      setLoading(true);
+
+      try {
+        const response = await fetchImages(imageName, page);
+
+        if (response.hits.length === 0) {
+          return toast.error(
+            'Sorry, we did not find anything for your request 😢'
+          );
+        }
+        setTotalImages(response.totalHits);
+        setImages(prevImages => [...prevImages, ...response.hits]);
+      } catch (error) {
+        return toast.error('Oops, something went wrong 🫣 Try again!');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    renderGallery();
+  }, [imageName, page]);
 
   const loadMore = () => {
     setPage(prevPage => prevPage + 1);
   };
-
-  // async componentDidUpdate(_, prevState) {
-  //   const prevName = prevState.imageName;
-  //   const nextName = this.state.imageName;
-  //   const prevPage = prevState.page;
-  //   const nextPage = this.state.page;
-
-  //   if (prevName !== nextName || prevPage !== nextPage) {
-  //     this.setState({ loading: true });
-  //     try {
-  //       const response = await fetchImages(nextName, nextPage);
-
-  //       if (response.data.hits.length === 0) {
-  //         return toast.error(
-  //           'Sorry, we did not find anything for your request 😢'
-  //         );
-  //       }
-
-  //       this.setState({
-  //         totalImages: response.data.totalHits,
-  //       });
-  //       this.setState(prevState => ({
-  //         images: [...prevState.images, ...response.data.hits],
-  //       }));
-  //     } catch (error) {
-  //       return toast.error('Oops, something went wrong 🫣 Try again!');
-  //     } finally {
-  //       this.setState({ loading: false });
-  //     }
-  //   }
-  // }
 
   const handleSelectImage = imageURL => {
     setSelectedImage(imageURL);

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 axios.defaults.baseURL = 'https://pixabay.com/api/';
 
-export async function fetchImages(imageName, page) {
+export const fetchImages = async (imageName, page) => {
   const response = await axios.get('', {
     params: {
       key: '30725538-60cf17fec7c19eff2b1d4a894',
@@ -14,9 +14,8 @@ export async function fetchImages(imageName, page) {
       page: page,
     },
   });
-
-  return response;
-}
+  return response.data;
+};
 
 fetchImages.propTypes = {
   imageName: PropTypes.string.isRequired,
