@@ -79,6 +79,7 @@ export default function App() {
         images={images}
         onSelect={handleSelectImage}
       />
+      {error && <p>{error.message}</p>}
       {loading && <Loader />}
       {showButton && <Button onClick={loadMore} />}
       {showModal && <Modal src={selectedImage} onClose={closeModal} />}
