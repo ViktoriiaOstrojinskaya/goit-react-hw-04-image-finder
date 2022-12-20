@@ -14,6 +14,7 @@ export const fetchImages = async (imageName, page) => {
       page: page,
     },
   });
+  console.log(response.data);
   return response.data;
 };
 

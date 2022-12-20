@@ -118,19 +118,17 @@ export default function App() {
       return;
     }
 
-    const renderGallery = () => {
+    const renderGallery = async () => {
       setLoading(true);
 
       try {
-        const { hits, totalHits } = fetchImages(imageName, page);
+        const { hits, totalHits } = await fetchImages(imageName, page);
 
         if (hits.length === 0) {
           toast.error('Sorry, we did not find anything for your request 😢');
         }
         setImages(images => [...images, ...hits]);
         setTotalImages(totalHits);
-
-        
       } catch (error) {
         setError(error);
         toast.error('Oops, something went wrong 🫣 Try again!');
@@ -163,8 +161,8 @@ export default function App() {
     }
   };
 
-  const maxPage = Math.ceil(setTotalImages / 12);
-  const showButton = images.length > 0 && setPage < maxPage;
+  
+  const showButton = images.length > 0 && setPage < Math.ceil(setTotalImages / 12);;
 
   return (
     <MainPage>
