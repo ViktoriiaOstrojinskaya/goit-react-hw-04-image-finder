@@ -129,6 +129,8 @@ export default function App() {
         }
         setImages(images => [...images, ...hits]);
         setTotalImages(totalHits);
+
+        
       } catch (error) {
         setError(error);
         toast.error('Oops, something went wrong 🫣 Try again!');
