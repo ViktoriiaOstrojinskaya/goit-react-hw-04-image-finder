@@ -7,7 +7,7 @@ import { Loader } from './Loader/Loader';
 import { Button } from './Button/Button';
 import { MainPage } from './App.styled';
 import { fetchImages } from './services/api';
-import { Modal } from './Modal/Modal';
+import Modal from './Modal/Modal';
 import { useState, useEffect } from 'react';
 
 // class App extends Component {
@@ -161,12 +161,11 @@ export default function App() {
     }
   };
 
-  
-  const showButton = images.length > 0 && setPage < Math.ceil(setTotalImages / 12);;
+  const maxPage = Math.ceil(totalImages / 12);
+  const showButton = images.length > 0 && page < maxPage;
 
   return (
     <MainPage>
-      <h1>hw-4</h1>
       <Searchbar onSubmit={handleSearchBarSubmit} />
       <ImageGallery
         searchName={imageName}
