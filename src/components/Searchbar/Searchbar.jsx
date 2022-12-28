@@ -15,6 +15,7 @@ export default function Searchbar({ onSubmit }) {
   const handleChangeName = event => {
     setImageName(event.currentTarget.value.toLowerCase());
   };
+  
 
   const handleSubmit = event => {
     event.preventDefault();
